@@ -2,20 +2,21 @@ package Test;
 
 import Browsers.Browsers;
 import Browsers.LaunchBrowser;
+import Page.GenerateCardPage;
 import Page.PaymentProcessPage;
 import Page.ProductPage;
 import Utils.BrowserOps;
 import Utils.UtilMethods;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
+import java.util.TreeMap;
 
 public class Test_PaymentProcessPage extends Base {
 
     public WebDriver driver;
+    TreeMap<String, Object> paymentMap;
 
     @BeforeClass
     public void creditCardSetup() throws InterruptedException {
@@ -23,6 +24,8 @@ public class Test_PaymentProcessPage extends Base {
         driver = launchBrowser.getSiteDeskTop(Browsers.FIREFOX);
         utilMethods = new UtilMethods(driver);
         utilMethods.generateCard();
+        generateCardPage = new GenerateCardPage(driver);
+        paymentMap = generateCardPage.getPaymentDataMap(); // ToDo: Null Pointer without this reference
     }
 
     @BeforeMethod
@@ -45,15 +48,20 @@ public class Test_PaymentProcessPage extends Base {
 
     @Test
     public void  successfulPaymentTransaction() throws InterruptedException {
-        /*Test_GenerateCardPage  test_generateCardPage = new Test_GenerateCardPage();
-        test_generateCardPage.getNewCardNumber();*/
         paymentProcessPage = new PaymentProcessPage(driver);
-        //paymentProcessPage.getCompletePaymentFields();
-        paymentProcessPage.selectMonth();
+        paymentProcessPage.getCompletePaymentFields(paymentMap);
+
+        Thread.sleep(6000);
     }
 
     @AfterMethod
     public void tearDown() {
+        browserOps = new BrowserOps(driver);
+        browserOps.closeBrowser();
+    }
+
+    @AfterClass
+    public void tearDownAll() {
         browserOps = new BrowserOps(driver);
         browserOps.closeBrowser();
     }
