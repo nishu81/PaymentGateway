@@ -17,5 +17,6 @@ public class Base {
     protected CheckCreditLimitPage checkCreditLimitPage;
     protected ProductPage productPage;
     protected PaymentProcessPage paymentProcessPage;
+    protected OrderConfirmationPage orderConfirmationPage;
 
 }
