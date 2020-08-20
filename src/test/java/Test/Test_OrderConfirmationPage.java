@@ -20,41 +20,40 @@ public class Test_OrderConfirmationPage extends Base {
 
     public WebDriver driver;
 
-    TreeMap<String, Object> paymentMap;
+    // TreeMap<String, Object> paymentMap;
 
-   /* //@BeforeClass
+    @BeforeClass
     public void creditCardSetup() throws InterruptedException {
         launchBrowser = new LaunchBrowser();
         driver = launchBrowser.getSiteDeskTop(Browsers.FIREFOX);
         utilMethods = new UtilMethods(driver);
         utilMethods.generateCard();
         generateCardPage = new GenerateCardPage(driver);
-        paymentMap = generateCardPage.getPaymentDataMap(); // ToDo: Null Pointer without this reference
-    }*/
+        utilMethods.paymentMap = generateCardPage.getPaymentDataMap();
+    }
 
     @BeforeMethod
     public void setup() throws InterruptedException {
         launchBrowser = new LaunchBrowser();
         driver = launchBrowser.getSiteDeskTop(Browsers.FIREFOX);
-        utilMethods = new UtilMethods(driver);
-        utilMethods.generateCard();
-        generateCardPage = new GenerateCardPage(driver);
-        paymentMap = generateCardPage.getPaymentDataMap();
-        //  launchBrowser = new LaunchBrowser();
-        driver = launchBrowser.getSiteDeskTop(Browsers.FIREFOX);
-        productPage = new ProductPage(driver);
+/*        productPage = new ProductPage(driver);
         driver.get(productPage.getHomePage());
         productPage = new ProductPage(driver);
         productPage.getProdInfoMap("3");
         productPage.clickToProceed();
+        paymentProcessPage = new PaymentProcessPage(driver);
+        paymentProcessPage.getCompletePaymentFields(utilMethods.paymentMap);*/
+        utilMethods = new UtilMethods(driver);
+        utilMethods.placeOrder();
     }
 
     @Test
-    public void  successfulPaymentTransaction() throws InterruptedException {
-        paymentProcessPage = new PaymentProcessPage(driver);
-        paymentProcessPage.getCompletePaymentFields(paymentMap);
+    public void successfulPaymentTransaction() throws InterruptedException {
         orderConfirmationPage = new OrderConfirmationPage(driver);
         orderConfirmationPage.getOrderId();
+     /*   utilMethods = new UtilMethods(driver);
+        String ccNumUsed = utilMethods.paymentMap.get("Card Number").toString();
+        System.out.println("WOrked " + ccNumUsed);*/
     }
 
     @AfterMethod
